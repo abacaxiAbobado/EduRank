@@ -8,7 +8,9 @@ export default function Ranking() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getRanking().then(setRanking).finally(() => setLoading(false));
+    getRanking()
+      .then(data => setRanking(data.filter(u => u.role !== 'ADMIN')))
+      .finally(() => setLoading(false));
   }, []);
 
   return (

@@ -12,9 +12,9 @@ import Profile from '../pages/Profile';
 import Admin from '../pages/Admin';
 import NotFound from '../pages/NotFound';
 
-export default function AppRoutes() {
+export default function AppRoutes({ location }) {
   return (
-    <Routes>
+    <Routes location={location}>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />

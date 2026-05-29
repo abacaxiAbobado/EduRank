@@ -40,3 +40,16 @@ button {
 input, textarea {
   font-family: 'DM Sans', sans-serif;
 }
+.page-transition {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-hidden {
+  opacity: 0;
+  transform: translateY(6px);
+}

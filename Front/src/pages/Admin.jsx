@@ -164,138 +164,132 @@ export default function Admin() {
         </div>
 
         {/* ── ABA CONTEÚDOS ── */}
-        {tab === 0 && (
-          <div>
-            <div style={{ ...card, marginBottom: 24 }}>
-              <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Novo conteúdo</h2>
-              <form onSubmit={criarConteudo} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div><label style={label}>Título</label><input style={input} value={novoConteudo.titulo} onChange={e => setNovoConteudo({ ...novoConteudo, titulo: e.target.value })} required /></div>
-                <div><label style={label}>Descrição curta</label><input style={input} value={novoConteudo.descricao} onChange={e => setNovoConteudo({ ...novoConteudo, descricao: e.target.value })} /></div>
-                <div><label style={label}>Corpo do conteúdo</label><textarea style={{ ...input, minHeight: 120, resize: 'vertical' }} value={novoConteudo.corpo} onChange={e => setNovoConteudo({ ...novoConteudo, corpo: e.target.value })} required /></div>
-                <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', alignSelf: 'flex-start' }}>Publicar</button>
+        <div style={{ display: tab === 0 ? 'block' : 'none' }}>
+          <div style={{ ...card, marginBottom: 24 }}>
+            <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Novo conteúdo</h2>
+            <form onSubmit={criarConteudo} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div><label style={label}>Título</label><input style={input} value={novoConteudo.titulo} onChange={e => setNovoConteudo({ ...novoConteudo, titulo: e.target.value })} required /></div>
+              <div><label style={label}>Descrição curta</label><input style={input} value={novoConteudo.descricao} onChange={e => setNovoConteudo({ ...novoConteudo, descricao: e.target.value })} /></div>
+              <div><label style={label}>Corpo do conteúdo</label><textarea style={{ ...input, minHeight: 120, resize: 'vertical' }} value={novoConteudo.corpo} onChange={e => setNovoConteudo({ ...novoConteudo, corpo: e.target.value })} required /></div>
+              <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', alignSelf: 'flex-start' }}>Publicar</button>
+            </form>
+          </div>
+
+          {editando && (
+            <div style={{ ...card, marginBottom: 24, border: '1px solid var(--accent)' }}>
+              <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Editando: {editando.titulo}</h2>
+              <form onSubmit={salvarEdicao} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div><label style={label}>Título</label><input style={input} value={editando.titulo} onChange={e => setEditando({ ...editando, titulo: e.target.value })} required /></div>
+                <div><label style={label}>Descrição curta</label><input style={input} value={editando.descricao || ''} onChange={e => setEditando({ ...editando, descricao: e.target.value })} /></div>
+                <div><label style={label}>Corpo do conteúdo</label><textarea style={{ ...input, minHeight: 120, resize: 'vertical' }} value={editando.corpo} onChange={e => setEditando({ ...editando, corpo: e.target.value })} required /></div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer' }}>Salvar</button>
+                  <button type="button" onClick={() => setEditando(null)} style={{ padding: '10px 20px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--muted)', cursor: 'pointer', fontWeight: 600 }}>Cancelar</button>
+                </div>
               </form>
             </div>
+          )}
 
-            {editando && (
-              <div style={{ ...card, marginBottom: 24, border: '1px solid var(--accent)' }}>
-                <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Editando: {editando.titulo}</h2>
-                <form onSubmit={salvarEdicao} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  <div><label style={label}>Título</label><input style={input} value={editando.titulo} onChange={e => setEditando({ ...editando, titulo: e.target.value })} required /></div>
-                  <div><label style={label}>Descrição curta</label><input style={input} value={editando.descricao || ''} onChange={e => setEditando({ ...editando, descricao: e.target.value })} /></div>
-                  <div><label style={label}>Corpo do conteúdo</label><textarea style={{ ...input, minHeight: 120, resize: 'vertical' }} value={editando.corpo} onChange={e => setEditando({ ...editando, corpo: e.target.value })} required /></div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer' }}>Salvar</button>
-                    <button type="button" onClick={() => setEditando(null)} style={{ padding: '10px 20px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--muted)', cursor: 'pointer', fontWeight: 600 }}>Cancelar</button>
-                  </div>
-                </form>
-              </div>
-            )}
-
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Conteúdos publicados ({conteudos.length})</h3>
-            {conteudos.length === 0
-              ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum conteúdo ainda.</div>
-              : conteudos.map(c => (
-                <div key={c.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>{c.titulo}</div>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>{c.descricao}</div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button onClick={() => { setEditando(c); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ padding: '7px 14px', background: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.3)', borderRadius: 8, color: 'var(--accent)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Editar</button>
-                    <button onClick={() => deletarConteudo(c.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
-                  </div>
+          <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Conteúdos publicados ({conteudos.length})</h3>
+          {conteudos.length === 0
+            ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum conteúdo ainda.</div>
+            : conteudos.map(c => (
+              <div key={c.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontWeight: 600 }}>{c.titulo}</div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>{c.descricao}</div>
                 </div>
-              ))
-            }
-          </div>
-        )}
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => { setEditando(c); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ padding: '7px 14px', background: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.3)', borderRadius: 8, color: 'var(--accent)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Editar</button>
+                  <button onClick={() => deletarConteudo(c.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
+                </div>
+              </div>
+            ))
+          }
+        </div>
 
         {/* ── ABA QUIZZES ── */}
-        {tab === 1 && (
-          <div>
-            {/* Formulário de criação */}
-            <div style={{ ...card, marginBottom: 24 }}>
-              <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Novo quiz</h2>
-              <form onSubmit={criarQuiz} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={label}>Título</label><input style={input} value={novoQuiz.titulo} onChange={e => setNovoQuiz({ ...novoQuiz, titulo: e.target.value })} required /></div>
-                <div><label style={label}>Descrição</label><input style={input} value={novoQuiz.descricao} onChange={e => setNovoQuiz({ ...novoQuiz, descricao: e.target.value })} /></div>
+        <div style={{ display: tab === 1 ? 'block' : 'none' }}>
+          <div style={{ ...card, marginBottom: 24 }}>
+            <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1rem', marginBottom: 16 }}>Novo quiz</h2>
+            <form onSubmit={criarQuiz} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div><label style={label}>Título</label><input style={input} value={novoQuiz.titulo} onChange={e => setNovoQuiz({ ...novoQuiz, titulo: e.target.value })} required /></div>
+              <div><label style={label}>Descrição</label><input style={input} value={novoQuiz.descricao} onChange={e => setNovoQuiz({ ...novoQuiz, descricao: e.target.value })} /></div>
 
-                {novoQuiz.questoes.map((q, qi) => (
-                  <div key={qi} style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 10, padding: 16 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                      <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Questão {qi + 1}</span>
-                      {novoQuiz.questoes.length > 1 && (
-                        <button type="button" onClick={() => removerQuestao(qi)} style={{ background: 'transparent', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem' }}>Remover</button>
-                      )}
-                    </div>
-                    <div style={{ marginBottom: 12 }}>
-                      <label style={label}>Pergunta</label>
-                      <input style={input} value={q.pergunta} onChange={e => atualizarQuestao(qi, 'pergunta', e.target.value)} required />
-                    </div>
-                    <label style={label}>Alternativas</label>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
-                      {q.alternativas.map((alt, ai) => (
-                        <input key={ai} style={input} placeholder={`Alternativa ${ai + 1}`} value={alt} onChange={e => atualizarAlternativa(qi, ai, e.target.value)} required />
-                      ))}
-                    </div>
-                    <div>
-                      <label style={label}>Resposta correta</label>
-                      <select style={input} value={q.respostaCorreta} onChange={e => atualizarQuestao(qi, 'respostaCorreta', e.target.value)} required>
-                        <option value="">Selecione...</option>
-                        {q.alternativas.filter(a => a).map((alt, ai) => (
-                          <option key={ai} value={alt}>{alt}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                ))}
-
-                <button type="button" onClick={adicionarQuestao} style={{ padding: '10px 20px', background: 'transparent', border: '1px dashed var(--border)', borderRadius: 8, color: 'var(--muted)', cursor: 'pointer', fontWeight: 600 }}>+ Adicionar questão</button>
-                <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', alignSelf: 'flex-start' }}>Publicar quiz</button>
-              </form>
-            </div>
-
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Quizzes publicados ({quizzes.length})</h3>
-            {quizzes.length === 0
-              ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum quiz ainda.</div>
-              : quizzes.map(q => (
-                <div key={q.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>{q.titulo}</div>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>{q._count?.questoes ?? 0} questões • por {q.autor?.name}</div>
-                  </div>
-                  <button onClick={() => deletarQuiz(q.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
-                </div>
-              ))
-            }
-          </div>
-        )}
-
-        {/* ── ABA USUÁRIOS ── */}
-        {tab === 2 && (
-          <div>
-            <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Usuários ({usuarios.length})</h3>
-            {usuarios.length === 0
-              ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum usuário.</div>
-              : usuarios.map(u => (
-                <div key={u.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>{u.name} <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>@{u.username}</span></div>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>Nível {u.level} • {u.totalPoints} pts • <span style={{ color: u.role === 'ADMIN' ? 'var(--accent)' : 'var(--muted)' }}>{u.role}</span></div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button onClick={() => alterarRole(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')} style={{ padding: '7px 14px', background: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.3)', borderRadius: 8, color: 'var(--accent)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>
-                      {u.role === 'ADMIN' ? 'Remover admin' : 'Tornar admin'}
-                    </button>
-                    {u.id !== user?.id && (
-                      <button onClick={() => deletarUsuario(u.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
+              {novoQuiz.questoes.map((q, qi) => (
+                <div key={qi} style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 10, padding: 16 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>Questão {qi + 1}</span>
+                    {novoQuiz.questoes.length > 1 && (
+                      <button type="button" onClick={() => removerQuestao(qi)} style={{ background: 'transparent', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem' }}>Remover</button>
                     )}
                   </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={label}>Pergunta</label>
+                    <input style={input} value={q.pergunta} onChange={e => atualizarQuestao(qi, 'pergunta', e.target.value)} required />
+                  </div>
+                  <label style={label}>Alternativas</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12 }}>
+                    {q.alternativas.map((alt, ai) => (
+                      <input key={ai} style={input} placeholder={`Alternativa ${ai + 1}`} value={alt} onChange={e => atualizarAlternativa(qi, ai, e.target.value)} required />
+                    ))}
+                  </div>
+                  <div>
+                    <label style={label}>Resposta correta</label>
+                    <select style={input} value={q.respostaCorreta} onChange={e => atualizarQuestao(qi, 'respostaCorreta', e.target.value)} required>
+                      <option value="">Selecione...</option>
+                      {q.alternativas.filter(a => a).map((alt, ai) => (
+                        <option key={ai} value={alt}>{alt}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-              ))
-            }
+              ))}
+
+              <button type="button" onClick={adicionarQuestao} style={{ padding: '10px 20px', background: 'transparent', border: '1px dashed var(--border)', borderRadius: 8, color: 'var(--muted)', cursor: 'pointer', fontWeight: 600 }}>+ Adicionar questão</button>
+              <button type="submit" style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, cursor: 'pointer', alignSelf: 'flex-start' }}>Publicar quiz</button>
+            </form>
           </div>
-        )}
+
+          <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Quizzes publicados ({quizzes.length})</h3>
+          {quizzes.length === 0
+            ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum quiz ainda.</div>
+            : quizzes.map(q => (
+              <div key={q.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontWeight: 600 }}>{q.titulo}</div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>{q._count?.questoes ?? 0} questões • por {q.autor?.name}</div>
+                </div>
+                <button onClick={() => deletarQuiz(q.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
+              </div>
+            ))
+          }
+        </div>
+
+        {/* ── ABA USUÁRIOS ── */}
+        <div style={{ display: tab === 2 ? 'block' : 'none' }}>
+          <h3 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, marginBottom: 12 }}>Usuários ({usuarios.length})</h3>
+          {usuarios.length === 0
+            ? <div style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>Nenhum usuário.</div>
+            : usuarios.map(u => (
+              <div key={u.id} style={{ ...card, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+                <div>
+                  <div style={{ fontWeight: 600 }}>{u.name} <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>@{u.username}</span></div>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--muted)', marginTop: 2 }}>Nível {u.level} • {u.totalPoints} pts • <span style={{ color: u.role === 'ADMIN' ? 'var(--accent)' : 'var(--muted)' }}>{u.role}</span></div>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => alterarRole(u.id, u.role === 'ADMIN' ? 'USER' : 'ADMIN')} style={{ padding: '7px 14px', background: 'rgba(124,106,247,0.15)', border: '1px solid rgba(124,106,247,0.3)', borderRadius: 8, color: 'var(--accent)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>
+                    {u.role === 'ADMIN' ? 'Remover admin' : 'Tornar admin'}
+                  </button>
+                  {u.id !== user?.id && (
+                    <button onClick={() => deletarUsuario(u.id)} style={{ padding: '7px 14px', background: 'rgba(247,106,106,0.15)', border: '1px solid rgba(247,106,106,0.3)', borderRadius: 8, color: 'var(--danger)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}>Deletar</button>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
       </main>
     </div>
   );
