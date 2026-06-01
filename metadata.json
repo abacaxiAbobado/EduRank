@@ -1,0 +1,6 @@
+{
+  "name": "EduRank",
+  "description": "Plataforma de quizzes e conteúdos educacionais gamificados com ranking, níveis e controle avançado de moderação.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
