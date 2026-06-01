@@ -1,0 +1,377 @@
+/* ================================================================ */
+/* EDURANK - AUTENTICAÇÃO (LOGIN/REGISTRO) */
+/* ================================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --border: #1e1e2e;
+  --accent: #7c6af7;
+  --accent2: #f7c26a;
+  --text: #e8e8f0;
+  --muted: #6b6b80;
+  --danger: #f76a6a;
+  --success: #6af7a0;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* BODY & BASE */
+/* ────────────────────────────────────────────────────────────────── */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* BACKGROUND ANIMADO COM ORBS */
+/* ────────────────────────────────────────────────────────────────── */
+
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  animation: drift 12s ease-in-out infinite;
+}
+
+.orb1 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent);
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.orb2 {
+  width: 400px;
+  height: 400px;
+  background: var(--accent2);
+  bottom: -80px;
+  right: -80px;
+  animation-delay: -4s;
+}
+
+.orb3 {
+  width: 300px;
+  height: 300px;
+  background: #6af7e0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -8s;
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(30px, -20px);
+  }
+  66% {
+    transform: translate(-20px, 30px);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* WRAPPER & BRAND */
+/* ────────────────────────────────────────────────────────────────── */
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  padding: 16px;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.brand-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.4rem;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-tagline {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* CARD */
+/* ────────────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* TABS */
+/* ────────────────────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 28px;
+  gap: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* FORMS */
+/* ────────────────────────────────────────────────────────────────── */
+
+.form {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form.active {
+  display: flex;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.field input {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.field input:focus {
+  border-color: var(--accent);
+}
+
+.field input::placeholder {
+  color: var(--muted);
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* BUTTONS */
+/* ────────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  margin-top: 4px;
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary:hover {
+  background: #6a57e8;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* MESSAGES */
+/* ────────────────────────────────────────────────────────────────── */
+
+.msg {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  display: none;
+}
+
+.msg.error {
+  background: rgba(247, 106, 106, 0.1);
+  border: 1px solid rgba(247, 106, 106, 0.3);
+  color: var(--danger);
+  display: block;
+}
+
+.msg.success {
+  background: rgba(106, 247, 160, 0.1);
+  border: 1px solid rgba(106, 247, 160, 0.3);
+  color: var(--success);
+  display: block;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* DIVIDER */
+/* ────────────────────────────────────────────────────────────────── */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 4px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* FEATURES */
+/* ────────────────────────────────────────────────────────────────── */
+
+.features {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.feature {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.feature-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* ANIMATIONS */
+/* ────────────────────────────────────────────────────────────────── */
+
+.card {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.brand {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────── */
+/* SPINNER */
+/* ────────────────────────────────────────────────────────────────── */
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

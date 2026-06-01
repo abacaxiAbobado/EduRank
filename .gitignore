@@ -1,8 +1,1 @@
-node_modules/
-build/
-dist/
-coverage/
-.DS_Store
-*.log
-.env*
-!.env.example
+-e "node_modules/\n.env\ndist/\nbuild/\n.DS_Store" 
