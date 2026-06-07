@@ -1,98 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id                    String                @id @default(uuid())
-  name                  String
-  email                 String                @unique
-  passwordHash          String
-  salt                  String
-  role                  String                @default("USER") // USER | ADMIN
-  points                Int                   @default(0)
-  avatar                String?               // Supported base64 images
-  completedQuizzesCount Int                   @default(0)
-  isSuspended           Boolean               @default(false)
-  suspensionReason      String?
-  suspensionEndsAt      DateTime?
-  quizzesCreated        Quiz[]                @relation("QuizAuthor")
-  submissions           QuizSubmission[]
-  correctQuestions      UserCorrectQuestion[]
-  contentsCreated       EducationalContent[]  @relation("ContentAuthor")
-  logs                  AdminLog[]
+  id           String    @id @default(uuid())
+  name         String
+  username     String    @unique
+  password     String
+  profileImage String?   // Base64 da foto de perfil
+  totalPoints  Int       @default(0)
+  level        Int       @default(1)
+  role         String    @default("USER") // "USER" ou "ADMIN"
+  suspended    Boolean   @default(false)
+  suspendedReason String?
+  suspendedUntil  DateTime?
+  createdAt    DateTime  @default(now())
+
+  quizzesCriados  Quiz[]
+  resultados      Resultado[]
+  acertosQuestoes AcertoQuestao[]
+  adminLogs       AdminLog[]
 }
 
 model Quiz {
-  id          String           @id @default(uuid())
-  title       String
-  description String
-  category    String
-  imageUrl    String?
-  authorId    String
-  author      User             @relation("QuizAuthor", fields: [authorId], references: [id], onDelete: Cascade)
-  createdAt   DateTime         @default(now())
-  questions   Question[]
-  submissions QuizSubmission[]
+  id        Int         @id @default(autoincrement())
+  titulo    String
+  descricao String?
+  autorId   String
+  autor     User        @relation(fields: [autorId], references: [id])
+  questoes  Questao[]
+  resultados Resultado[]
+  createdAt DateTime    @default(now())
 }
 
-model Question {
-  id                 String                @id @default(uuid())
-  questionText       String
-  options            String[]              // PostgreSQL string array
-  correctAnswerIndex Int
-  explanation        String?
-  quizId             String
-  quiz               Quiz                  @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  correctAnswers     UserCorrectQuestion[]
+model Questao {
+  id              Int             @id @default(autoincrement())
+  pergunta        String
+  alternativas    String[]
+  respostaCorreta String
+  explicacao      String?
+  quizId          Int
+  quiz            Quiz            @relation(fields: [quizId], references: [id])
+  acertos         AcertoQuestao[]
 }
 
-model QuizSubmission {
-  id           String   @id @default(uuid())
-  quizId       String
-  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  answers      Int[]    // PostgreSQL int array for responses
-  score        Float
-  pointsEarned Int
-  createdAt    DateTime @default(now())
+model AcertoQuestao {
+  id        Int      @id @default(autoincrement())
+  usuarioId String
+  questaoId Int
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  questao   Questao  @relation(fields: [questaoId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([usuarioId, questaoId])
 }
 
-model UserCorrectQuestion {
-  id         String   @id @default(uuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  questionId String
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  answeredAt DateTime @default(now())
-
-  @@unique([userId, questionId])
+model Conteudo {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  descricao String?
+  corpo     String
+  createdAt DateTime @default(now())
 }
 
-model EducationalContent {
-  id            String   @id @default(uuid())
-  title         String
-  content       String
-  category      String
-  tags          String[] // PostgreSQL string array
-  authorId      String
-  author        User     @relation("ContentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
-  imageUrl      String?
-  attachedFiles Json     @default("[]") // Json array of objects { name: string, url: string }
-  createdAt     DateTime @default(now())
+model Resultado {
+  id        Int      @id @default(autoincrement())
+  usuarioId String
+  quizId    Int
+  acertos   Int
+  total     Int
+  pontos    Int
+  usuario   User     @relation(fields: [usuarioId], references: [id])
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model AdminLog {
-  id         String   @id @default(uuid())
-  action     String
-  details    String
-  adminId    String
-  admin      User     @relation(fields: [adminId], references: [id], onDelete: Cascade)
-  adminEmail String
-  timestamp  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  adminId   String
+  acao      String
+  alvo      String?
+  detalhes  String?
+  admin     User     @relation(fields: [adminId], references: [id])
+  createdAt DateTime @default(now())
 }
