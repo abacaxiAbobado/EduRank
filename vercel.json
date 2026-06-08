@@ -1,0 +1,8 @@
+{
+  "buildCommand": "cd Front && npm install && npm run build",
+  "outputDirectory": "Front/dist",
+  "installCommand": "echo 'skip root install'",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
