@@ -1,10 +1,12 @@
+import React from 'react';
+
 /**
  * Converte URLs em texto para elementos <a> clicáveis de forma segura.
  * Retorna um array de strings/elementos React.
  */
-import React from 'react';
 export function linkify(text) {
   if (!text) return text;
+  
   const urlRegex = /https?:\/\/[^\s<>"{}|\\^`[\]]+/g;
   const parts = [];
   let lastIndex = 0;
@@ -14,18 +16,22 @@ export function linkify(text) {
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
     }
+    
     const url = match[0];
     parts.push(
-      <a
-        key={match.index}
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ color: 'var(--accent)', textDecoration: 'underline', wordBreak: 'break-all' }}
-      >
-        {url}
-      </a>
+      React.createElement('a', {
+        key: match.index,
+        href: url,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        style: {
+          color: 'var(--accent)',
+          textDecoration: 'underline',
+          wordBreak: 'break-all'
+        }
+      }, url)
     );
+    
     lastIndex = match.index + url.length;
   }
 
