@@ -2,7 +2,7 @@
  * Converte URLs em texto para elementos <a> clicáveis de forma segura.
  * Retorna um array de strings/elementos React.
  */
-impot React from 'react';
+import React from 'react';
 export function linkify(text) {
   if (!text) return text;
   const urlRegex = /https?:\/\/[^\s<>"{}|\\^`[\]]+/g;
