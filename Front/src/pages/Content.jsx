@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import { getConteudos } from '../services/contentService';
 
 export default function Content() {
   const [conteudos, setConteudos] = useState([]);
+  const sidebar = useSidebar();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -14,8 +17,9 @@ export default function Content() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh' }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 800 }}>Conteúdos 📚</h1>
           <p style={{ color: 'var(--muted)', fontSize: '0.9rem', marginTop: 4 }}>Estude antes de fazer os quizzes</p>

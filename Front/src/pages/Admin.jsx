@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import { useAuth } from '../hooks/useAuth';
 import { nomeDoNivel } from '../utils/levelCalculator';
 import api from '../services/api';
@@ -10,6 +12,7 @@ const TAB = ['Conteúdos', 'Quizzes', 'Usuários', 'Logs'];
 export default function Admin() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const sidebar = useSidebar();
   const [tab, setTab] = useState(0);
   const [conteudos, setConteudos] = useState([]);
   const [novoConteudo, setNovoConteudo] = useState({ titulo: '', descricao: '', corpo: '' });
@@ -110,8 +113,9 @@ export default function Admin() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh' }}>
         <div style={{ marginBottom: 24 }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 800 }}>Painel Admin ⚙️</h1>
           <p style={{ color: 'var(--muted)', fontSize: '0.9rem', marginTop: 4 }}>Gerencie conteúdos, quizzes e usuários</p>

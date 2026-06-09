@@ -116,3 +116,134 @@ input, textarea, select { font-family: var(--font-body); }
 }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── MOBILE HEADER ────────────────────────────────────────── */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 98;
+}
+
+.hamburger-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 36px; height: 36px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 18px; height: 2px;
+  background: var(--text);
+  border-radius: 99px;
+  transition: all 0.2s;
+}
+
+/* ── SIDEBAR RESPONSIVA ───────────────────────────────────── */
+.sidebar-close-btn {
+  display: none !important;
+}
+
+/* ── RESPONSIVIDADE GERAL ─────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Sidebar vira drawer */
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    display: block !important;
+  }
+  .sidebar-close-btn {
+    display: flex !important;
+  }
+
+  /* Header mobile aparece */
+  .mobile-header {
+    display: flex;
+  }
+
+  /* Conteúdo principal */
+  main {
+    margin-left: 0 !important;
+    padding: 76px 16px 24px !important;
+  }
+
+  /* Grids */
+  [style*="gridTemplateColumns: 'repeat(3, 1fr)'"],
+  [style*='gridTemplateColumns: "repeat(3, 1fr)"'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns: '1fr 1fr'"],
+  [style*='gridTemplateColumns: "1fr 1fr"'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard — cards de stats */
+  div[style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Quiz — botão criar fica embaixo do título */
+  div[style*="justifyContent: 'space-between'"][style*="alignItems: 'flex-start'"] {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start !important;
+  }
+
+  /* Modais */
+  div[style*="maxWidth: 560"],
+  div[style*="maxWidth: 400"] {
+    padding: 20px !important;
+  }
+
+  /* Admin tabs — scroll horizontal */
+  div[style*="display: 'flex'"][style*="gap: 8"][style*="marginBottom: 28"] {
+    overflow-x: auto;
+    padding-bottom: 4px;
+    flex-wrap: nowrap;
+  }
+
+  /* Toast — ocupa mais espaço */
+  div[style*="bottom: 24"][style*="right: 24"] {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    max-width: 100% !important;
+  }
+
+  /* Botões de ação nas listas admin */
+  div[style*="justifyContent: 'space-between'"][style*="alignItems: 'center'"] {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Títulos menores */
+  h1[style*="1.8rem"] {
+    font-size: 1.4rem !important;
+  }
+
+  /* Cards do profile grid */
+  div[style*="gridTemplateColumns: '1fr 1fr'"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}

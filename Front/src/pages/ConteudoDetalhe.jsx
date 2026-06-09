@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import { getConteudo } from '../services/contentService';
 import { linkify } from '../utils/linkify.jsx';
 
@@ -18,10 +20,13 @@ export default function ConteudoDetalhe() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  const sidebar = useSidebar();
+
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh', boxSizing: 'border-box' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh', boxSizing: 'border-box' }}>
         <button onClick={() => navigate('/content')} style={{
           background: 'transparent', border: '1px solid var(--border)', borderRadius: 8,
           color: 'var(--muted)', padding: '8px 16px', cursor: 'pointer', fontSize: '0.88rem',

@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import ProgressBar from '../components/ProgressBar';
 import Avatar from '../components/Avatar';
 import { calcularProgresso, nomeDoNivel, proximoPts } from '../utils/levelCalculator';
@@ -15,6 +17,7 @@ export default function Profile() {
   const [form, setForm] = useState({ name: '', username: '', password: '' });
   const [msg, setMsg] = useState('');
   const [erro, setErro] = useState('');
+  const sidebar = useSidebar();
   const [loading, setLoading] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
   const fileRef = useRef(null);
@@ -89,8 +92,9 @@ export default function Profile() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh' }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 800 }}>Perfil 👤</h1>
         </div>

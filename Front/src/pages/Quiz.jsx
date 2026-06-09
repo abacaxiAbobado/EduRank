@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import QuizCard from '../components/QuizCard';
 import QuizForm from '../components/QuizForm';
 import { getQuizzes, getQuiz, responderQuiz, createQuiz, updateQuiz } from '../services/quizService';
@@ -10,6 +12,7 @@ import { linkify } from '../utils/linkify.jsx';
 export default function Quiz() {
   const { user, refreshUser } = useAuth();
   const [quizzes, setQuizzes] = useState([]);
+  const sidebar = useSidebar();
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(null);        // null | 'loading' | { questoes, index, respostas, id, titulo }
   const [selected, setSelected] = useState(null);
@@ -100,8 +103,9 @@ export default function Quiz() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
           <div>
             <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 800 }}>Quizzes 🧠</h1>

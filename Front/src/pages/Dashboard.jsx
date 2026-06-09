@@ -1,17 +1,21 @@
 import { useAuth } from '../hooks/useAuth';
 import Sidebar from '../components/Sidebar';
+import MobileHeader from '../components/MobileHeader';
+import { useSidebar } from '../hooks/useSidebar';
 import ProgressBar from '../components/ProgressBar';
 import { calcularProgresso, nomeDoNivel, proximoPts } from '../utils/levelCalculator';
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const sidebar = useSidebar();
   const pct = user ? calcularProgresso(user.totalPoints, user.level) : 0;
   const next = user ? proximoPts(user.level) : null;
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <main style={{ marginLeft: 240, flex: 1, padding: 32, minHeight: '100vh' }}>
+      <MobileHeader onOpen={sidebar.open} />
+      <Sidebar isOpen={sidebar.isOpen} onClose={sidebar.close} />
+      <main style={{ marginLeft: 'var(--sidebar-width, 240px)', flex: 1, padding: 32, minHeight: '100vh' }}>
         <div style={{ marginBottom: 28 }}>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 800 }}>
             Olá, {user?.name?.split(' ')[0]}! 👋
