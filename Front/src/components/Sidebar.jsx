@@ -45,11 +45,14 @@ export default function Sidebar({ isOpen, onClose }) {
       <aside
         className={`sidebar${isOpen ? ' sidebar-open' : ''}`}
         style={{
-          width: 240, minHeight: '100vh',
+          width: 240,
+          height: '100vh',
           background: 'var(--surface)', borderRight: '1px solid var(--border)',
           display: 'flex', flexDirection: 'column', padding: '28px 16px',
           position: 'fixed', top: 0, left: 0, bottom: 0, zIndex: 100,
           transition: 'transform 0.25s ease',
+          overflowY: 'auto',
+          overflowX: 'hidden',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>

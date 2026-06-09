@@ -124,7 +124,10 @@ input, textarea, select { font-family: var(--font-body); }
   top: 0;
   left: 0;
   bottom: 0;
-  overflow-y: auto;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden;
 }
 
 main {
