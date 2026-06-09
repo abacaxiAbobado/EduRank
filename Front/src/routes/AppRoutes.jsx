@@ -10,6 +10,7 @@ import Quiz from '../pages/Quiz';
 import Ranking from '../pages/Ranking';
 import Profile from '../pages/Profile';
 import Admin from '../pages/Admin';
+import Suspensa from '../pages/Suspensa';
 import NotFound from '../pages/NotFound';
 
 export default function AppRoutes({ location }) {
@@ -18,6 +19,7 @@ export default function AppRoutes({ location }) {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/suspensa" element={<Suspensa />} />
       <Route path="/dashboard"   element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/content"     element={<ProtectedRoute><Content /></ProtectedRoute>} />
       <Route path="/content/:id" element={<ProtectedRoute><ConteudoDetalhe /></ProtectedRoute>} />

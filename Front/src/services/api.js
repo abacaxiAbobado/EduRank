@@ -18,6 +18,14 @@ api.interceptors.response.use(
       localStorage.removeItem('user');
       window.location.href = '/login';
     }
+    if (err.response?.status === 403 && err.response?.data?.suspensa) {
+      const { motivo, ate } = err.response.data;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      const params = new URLSearchParams({ motivo: motivo || '' });
+      if (ate) params.set('ate', ate);
+      window.location.href = `/suspensa?${params.toString()}`;
+    }
     return Promise.reject(err);
   }
 );

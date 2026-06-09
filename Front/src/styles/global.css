@@ -117,6 +117,20 @@ input, textarea, select { font-family: var(--font-body); }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
+
+/* ── LAYOUT FIXO ─────────────────────────────────────────── */
+.sidebar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+main {
+  overflow-y: auto;
+}
+
 /* ── MOBILE HEADER ────────────────────────────────────────── */
 .mobile-header {
   display: none;

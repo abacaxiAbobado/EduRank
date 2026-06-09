@@ -34,6 +34,10 @@ export default function Admin() {
   useEffect(() => {
     if (user?.role !== 'ADMIN') { navigate('/dashboard'); return; }
     fetchAll();
+    const interval = setInterval(() => {
+      fetchAll();
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   async function fetchAll() {
